@@ -1,4 +1,5 @@
 import express from "express";
+import "dotenv/config";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import rateLimit from "express-rate-limit";
 import fetch from "node-fetch";
@@ -53,7 +54,7 @@ app.use(
   auth,
   mcpLimiter,
   createProxyMiddleware({
-    target: `http://127.0.0.1:${MCP_PORT}`,
+    target: `http://127.0.0.1:${MCP_PORT}/mcp`,
     changeOrigin: false,
   })
 );
