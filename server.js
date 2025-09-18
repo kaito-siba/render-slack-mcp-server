@@ -40,10 +40,16 @@ const mcpLimiter = rateLimit({
 // 3) /health: 軽量疎通のみ。ここにレートリミットや認証はかけない
 app.get("/health", async (req, res) => {
   try {
-    const r = await fetch(`http://127.0.0.1:${MCP_PORT}/mcp`, {
-      method: "GET",
+    const r = await fetch("https://slack.com/api/auth.test", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.SLACK_BOT_TOKEN}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: "",
     });
-    if (r.ok) return res.status(200).send("ok");
+    const j = await r.json();
+    if (j.ok) return res.status(200).send("ok");
   } catch {}
   return res.status(503).send("ng");
 });
